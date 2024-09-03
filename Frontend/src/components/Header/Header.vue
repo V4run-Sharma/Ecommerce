@@ -37,7 +37,13 @@
         <img src="@/assets/cart.svg" alt="Cart" class="cart-icon" />
         <div class="cart-count">{{ cartCount }}</div>
       </div>
-      <p class="profile-name">Hello, {{ userName }}</p>
+      <p @click="toggleProfileMenu" class="profile-name">
+        Hello, {{ userName }}
+      </p>
+
+      <div class="profile-menu-wrapper">
+        <ProfileMenu v-if="isProfileMenuOpen" />
+      </div>
     </div>
   </section>
 </template>
@@ -201,5 +207,14 @@
 .profile-name:hover {
   cursor: pointer;
   background-color: #0072ff22;
+}
+
+.profile-menu-wrapper {
+  position: absolute;
+  top: 110%;
+  right: 4px;
+  z-index: 1;
+  width: fit-content;
+  border-radius: 0.5rem;
 }
 </style>
