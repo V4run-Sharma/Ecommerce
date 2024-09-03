@@ -22,6 +22,7 @@
   align-items: st;
   justify-content: start;
   padding: 0.75rem 1.5rem 0.75rem 0.75rem;
+  box-shadow: 0.5rem 0.5rem 1rem 0.5rem #00000033;
 }
 
 .logo-wrapper {

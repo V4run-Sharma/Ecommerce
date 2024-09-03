@@ -1,6 +1,6 @@
 import { computed, defineComponent, ref } from "vue";
 
-import MobileMenu from "./MobileMenu.vue";
+import MobileMenu from "../MobileMenu/MobileMenu.vue";
 
 export default defineComponent({
   name: "Header",
