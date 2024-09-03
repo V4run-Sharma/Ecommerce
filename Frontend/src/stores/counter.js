@@ -1,12 +1,20 @@
-import { ref, computed } from 'vue'
-import { defineStore } from 'pinia'
+import { computed, ref } from "vue";
 
-export const useCounterStore = defineStore('counter', () => {
-  const count = ref(0)
-  const doubleCount = computed(() => count.value * 2)
-  function increment() {
-    count.value++
-  }
+import { defineStore } from "pinia";
 
-  return { count, doubleCount, increment }
-})
+export const useProduct = defineStore("Products", () => {
+  const productsInStore = ref([]);
+
+  const getAllProducts = async () => {
+    const response = await fetch("https://fakestoreapi.com/products");
+    productsInStore.value = await response.json();
+  };
+  getAllProducts();
+
+  const count = computed(() => productsInStore.value.length);
+
+  return {
+    productsInStore,
+    count,
+  };
+});

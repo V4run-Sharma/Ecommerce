@@ -1,0 +1,205 @@
+<template>
+  <section class="header-wrapper">
+    <div class="ham-toggle">
+      <img
+        v-if="isMobileMenuOpen"
+        @click="toggleMobileMenu"
+        src="@/assets/x.svg"
+        alt="Close Menu"
+        class="close-icon"
+      />
+      <img
+        v-else
+        @click="toggleMobileMenu"
+        src="@/assets/menu.svg"
+        alt="menu"
+        class="menu-icon"
+      />
+    </div>
+
+    <div class="mobile-menu-wrapper">
+      <MobileMenu v-if="isMobile && isMobileMenuOpen" />
+    </div>
+
+    <div class="logo-wrapper">
+      <img src="@/assets/blibli.webp" alt="logo" />
+    </div>
+
+    <div class="search-wrapper">
+      <input type="text" placeholder="Search" />
+      <button class="search-btn">
+        <img src="@/assets/search.svg" class="search-icon" alt="Search Icon" />
+      </button>
+    </div>
+
+    <div class="profile-wrapper">
+      <div class="cart-wrapper">
+        <img src="@/assets/cart.svg" alt="Cart" class="cart-icon" />
+        <div class="cart-count">{{ cartCount }}</div>
+      </div>
+      <p class="profile-name">Hello, {{ userName }}</p>
+    </div>
+  </section>
+</template>
+
+<script src="./header.js"></script>
+
+<style scoped>
+.header-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  background-color: #0072ff;
+}
+
+.ham-toggle {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+
+.menu-icon,
+.close-icon {
+  width: 1.5rem;
+}
+
+.mobile-menu-wrapper {
+  display: none;
+  position: absolute;
+  top: 110%;
+  left: 6;
+  z-index: 1;
+  width: fit-content;
+  border-radius: 0.5rem;
+}
+
+.logo-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-wrapper img {
+  height: clamp(1.125rem, 10vw, 2.25rem);
+  margin-top: -2px;
+}
+
+.search-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-wrapper input {
+  width: clamp(10rem, 25vw, 20rem);
+  padding: 0.75rem;
+  border: none;
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+  transition: all 0.3s;
+}
+
+.search-wrapper input:focus {
+  outline: none;
+  background: #cfe0ff;
+}
+
+.search-btn {
+  width: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  border: none;
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  padding: 0.75rem;
+  transition: all 0.3s;
+}
+
+.search-btn:hover {
+  cursor: pointer;
+  background-color: #cfe0ff;
+}
+
+.search-icon {
+  width: calc(1rem - 0.5px);
+}
+
+.profile-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  border-radius: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .ham-toggle {
+    display: flex;
+  }
+
+  .mobile-menu-wrapper {
+    display: flex;
+  }
+
+  .logo-wrapper img {
+    display: none;
+  }
+
+  .profile-wrapper {
+    display: none;
+  }
+}
+
+.cart-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  transition: all 0.3s;
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+
+.cart-wrapper:hover {
+  cursor: pointer;
+  background-color: #0072ff22;
+}
+
+.cart-icon {
+  width: 2.5rem;
+}
+
+.cart-count {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background-color: red;
+  color: white;
+  border-radius: 999px;
+  padding: 3px;
+  font-size: 10px;
+  font-weight: bolder;
+}
+
+.profile-name {
+  padding: calc(0.5rem + 2px);
+  /* font-size: ; */
+  font-weight: bold;
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  transition: all 0.3s;
+}
+
+.profile-name:hover {
+  cursor: pointer;
+  background-color: #0072ff22;
+}
+</style>
