@@ -1,4 +1,3 @@
-import { checkUser } from "@/javascript/check-uesr";
 import { defineComponent } from "vue";
 
 export default defineComponent({

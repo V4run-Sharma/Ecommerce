@@ -1,6 +1,6 @@
 <template>
   <div class="login-page">
-    <img src="../assets/blibli.webp" class="logo" />
+    <img src="../assets/logo.png" class="logo" />
     <div class="container">
       <h2>Login</h2>
       <form @submit.prevent="handleLogin">

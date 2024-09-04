@@ -3,28 +3,42 @@
     <div
       class="cart-item"
       v-for="cartItem in cartItemsInStore"
-      :key="cartItem.id"
+      :key="cartItem.cId"
     >
       <img :src="cartItem.image" alt="cart item" />
       <div class="cart-item-details">
         <div class="item-detials">
           <p class="cart-item-name">
             {{
-              cartItem.title.length > 20
-                ? cartItem.title.slice(0, 20) + "..."
-                : cartItem.title
+              cartItem.name.length > 20
+                ? cartItem.name.slice(0, 20) + "..."
+                : cartItem.name
             }}
           </p>
           <p class="cart-item-price">{{ cartItem.price }}</p>
         </div>
         <div class="item-amount">
           <div class="change-amount">
-            <button @click="updateCart(cartItem.id, `-`)">-</button>
+            <button
+              @click="
+                updateQuantity(cartItem.pId, cartItem.quantity, cartItem.sId)
+              "
+            >
+              -
+            </button>
             <p>{{ cartCount }}</p>
-            <button @click="updateCart(cartItem.id, `+`)">+</button>
+            <button
+              @click="
+                updateQuantity(cartItem.pId, cartItem.quantity, cartItem.sId)
+              "
+            >
+              +
+            </button>
           </div>
           <div class="delete-item">
-            <button @click="updateCart(cartItem.id, `del`)">Delete</button>
+            <button @click="deleteItem(cartItem.pId, cartItem.sId)">
+              Delete
+            </button>
           </div>
         </div>
       </div>

@@ -14,18 +14,18 @@ export const useAuthStore = defineStore('auth', {
           },
           body: JSON.stringify({ email, password }),
         });
-        
-        console.log(email, password, response)
-        console.log(response.status)
-        if (response.status) {
+        const data = await response.json()
+        console.log(data)
+        console.log(data.status)
+        // console.log(data.data)
+        // if (data.status == true) {
 
-          const data = await response.json();
-          this.AuthToken = data.headers["AuthToken"];
-          // localStorage.setItem('token', this.token);
-          document.cookie=`AuthToken=${AuthToken}`
-          console.log(this.AuthToken)
-          return true;
-        }
+        //   this.AuthToken = data.headers["AuthToken"];
+        //   // localStorage.setItem('token', this.token);
+        //   document.cookie=`AuthToken=${AuthToken}`
+        //   console.log(this.AuthToken)
+          return data.status;
+        
       } catch {
         return false;
       }
