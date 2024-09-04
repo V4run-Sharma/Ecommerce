@@ -1,8 +1,9 @@
 <template>
-  <div class="product-card">
+  <div class="product-card" @click.stop="goToDetails(product.pId)">
+    >
     <img
       class="product-image"
-      src="https://www.ddealz.in/cdn/shop/products/p1_1024x1024@2x.jpg?v=1626518069"
+      src="https://img.freepik.com/free-vector/realistic-design-green-smartphone-with-three-cameras_23-2148380822.jpg?t=st=1725451452~exp=1725455052~hmac=a4dedc9d48bd879c84b4f798f7ce244ae36ed05c21ef0e27fda5c6b0edf906d6&w=1060"
       :alt="product.title"
     />
     <div class="product-details">

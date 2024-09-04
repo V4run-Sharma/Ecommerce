@@ -9,11 +9,7 @@
       <div class="cart-item-details">
         <div class="item-detials">
           <p class="cart-item-name">
-            {{
-              cartItem.name.length > 20
-                ? cartItem.name.slice(0, 20) + "..."
-                : cartItem.name
-            }}
+            {{ cartItem.name }}
           </p>
           <p class="cart-item-price">{{ cartItem.price }}</p>
         </div>
@@ -21,22 +17,32 @@
           <div class="change-amount">
             <button
               @click="
-                updateQuantity(cartItem.pId, cartItem.quantity, cartItem.sId)
+                updateQuantity(
+                  cartItem.cId,
+                  cartItem.pId,
+                  cartItem.quantity,
+                  cartItem.sId
+                )
               "
             >
               -
             </button>
-            <p>{{ cartCount }}</p>
+            <p>{{ cartItem.quantity }}</p>
             <button
               @click="
-                updateQuantity(cartItem.pId, cartItem.quantity, cartItem.sId)
+                updateQuantity(
+                  cartItem.cid,
+                  cartItem.pid,
+                  cartItem.quantity,
+                  cartItem.sid
+                )
               "
             >
               +
             </button>
           </div>
           <div class="delete-item">
-            <button @click="deleteItem(cartItem.pId, cartItem.sId)">
+            <button @click="deleteItem(cartItem.pid, cartItem.sid)">
               Delete
             </button>
           </div>

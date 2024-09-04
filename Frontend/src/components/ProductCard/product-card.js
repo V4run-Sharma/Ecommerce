@@ -1,4 +1,5 @@
 import { defineComponent } from "vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "ProductCard",
@@ -9,8 +10,8 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const url =
-      "http://192.168.50.124:8090/swagger-ui/index.html#/cart/addItem";
+    const router = useRouter();
+    const url = "http://10.20.3.79:8092/cart/addItem";
 
     const addToCart = async (product, cartId) => {
       // const authToken = checkUser();
@@ -20,14 +21,23 @@ export default defineComponent({
           "Content-Type": "application/json",
           // authToken: "hello",
         },
-        body: JSON.stringify({ product, cartId }),
+        body: JSON.stringify({
+          pid: "f6daf1e4-3d74-47b2-a6e4-f63553bf5502",
+          quantity: 3,
+          sid: "SELLER008",
+        }),
       });
       const data = await res.json();
+    };
+
+    const goToDetails = (pid) => {
+      router.push(`/product/${pid}`);
     };
 
     return {
       product: props.product,
       addToCart,
+      goToDetails,
     };
   },
 });

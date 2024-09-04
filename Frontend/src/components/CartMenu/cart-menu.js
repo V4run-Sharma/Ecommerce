@@ -9,15 +9,17 @@ export default defineComponent({
 
     const fetchCartItems = () => {
       cartItemsInStore.value = cartStore.cart;
+      console.log(cartItemsInStore.value);
     };
     fetchCartItems();
 
-    const updateQuantity = (pId, quantity, sId) => {
-      cartStore.updateQuantity(pId, quantity, sId);
+    const updateQuantity = (cId, pid, quantity, sid) => {
+      console.log(cId, pid, quantity, sid);
+      cartStore.updateQuantity(cId, pid, quantity, sid);
     };
 
-    const deleteItem = (pId, sId) => {
-      cartStore.deleteItem(pId, sId);
+    const deleteItem = (pid, sid) => {
+      cartStore.deleteItem(pid, sid);
     };
 
     return {

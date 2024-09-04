@@ -1,12 +1,11 @@
-import { computed, ref } from "vue";
-
 import { defineStore } from "pinia";
+import { ref } from "vue";
 
 const useCartStore = defineStore("cart", () => {
   const cart = ref([]);
 
-  const getAllCartItems = async () => {
-    const url = "http://10.20.3.216:8090/cart/getItems";
+  const getAllCartItems = async (cid) => {
+    const url = `http://10.20.3.79:8092/cart/getItems?cId=${cid}`;
     const response = await fetch(url, {
       method: "GET",
       headers: {
@@ -19,12 +18,12 @@ const useCartStore = defineStore("cart", () => {
     let data = await response.json();
     cart.value = data.data;
   };
-  getAllCartItems();
+  getAllCartItems(111);
 
-  const count = computed(() => cart.value.length);
+  // const count = computed(() => cart.value.length);
 
-  const updateQuantity = async (pId, quantity, sId) => {
-    const url = "";
+  const updateQuantity = async (cid, pid, quantity, sid) => {
+    const url = `http://10.20.3.79:8092/cart/updateQuantity?cId=${cid}&newQuantity=${quantity}&pId=${pid}&sId=${sid}`;
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -34,9 +33,10 @@ const useCartStore = defineStore("cart", () => {
         "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({
-        pId,
+        cid,
+        pid,
         quantity,
-        sId,
+        sid,
       }),
     });
 
@@ -64,7 +64,7 @@ const useCartStore = defineStore("cart", () => {
 
   return {
     cart,
-    count,
+    // count,
     updateQuantity,
     deleteItem,
   };
