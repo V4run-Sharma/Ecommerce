@@ -1,15 +1,19 @@
 import { createRouter, createWebHistory } from "vue-router";
 
+import Login from "@/views/Login.vue";
+import Payment from "@/views/Payment.vue";
 import Products from "@/views/Products/Products.vue";
+import Signup from "@/views/Signup.vue";
+import Thank from "@/views/Thank.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    {
-      path: "/products",
-      name: "Products",
-      component: Products,
-    },
+    { path: "/", name: "Products", component: Products },
+    { path: "/login", name: "Login", component: Login },
+    { path: "/signup", name: "Signup", component: Signup },
+    { path: "/payment", name: "Payment", component: Payment },
+    { path: "/thank", name: "Thank", component: Thank },
   ],
 });
 

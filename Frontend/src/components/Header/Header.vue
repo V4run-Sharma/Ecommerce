@@ -18,7 +18,7 @@
     </div>
 
     <div class="mobile-menu-wrapper">
-      <MobileMenu v-if="isMobile && isMobileMenuOpen" />
+      <MobileMenu v-if="isMobile && isMobileMenuOpen" :cartCount="cartCount" />
     </div>
 
     <div class="logo-wrapper">
@@ -33,13 +33,17 @@
     </div>
 
     <div class="profile-wrapper">
-      <div class="cart-wrapper">
+      <div @click="toggleCartMenu" class="cart-wrapper">
         <img src="@/assets/cart.svg" alt="Cart" class="cart-icon" />
         <div class="cart-count">{{ cartCount }}</div>
       </div>
       <p @click="toggleProfileMenu" class="profile-name">
         Hello, {{ userName }}
       </p>
+
+      <div class="cart-menu-wrapper">
+        <CartMenu v-if="isCartMenuOpen" />
+      </div>
 
       <div class="profile-menu-wrapper">
         <ProfileMenu v-if="isProfileMenuOpen" />
@@ -207,6 +211,15 @@
 .profile-name:hover {
   cursor: pointer;
   background-color: #0072ff22;
+}
+
+.cart-menu-wrapper {
+  position: absolute;
+  top: 110%;
+  right: 4px;
+  z-index: 1;
+  width: fit-content;
+  border-radius: 0.5rem;
 }
 
 .profile-menu-wrapper {

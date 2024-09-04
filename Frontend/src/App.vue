@@ -1,5 +1,5 @@
 <template>
-  <Header />
+  <Header v-if="$route.path !== '/login' && $route.path !== '/signup'" />
   <RouterView />
 </template>
 

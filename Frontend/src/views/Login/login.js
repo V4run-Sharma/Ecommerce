@@ -14,7 +14,7 @@ export default defineComponent({
       const user = store.findUser(email.value, password.value);
       if (user) {
         alert("Login successful!");
-        router.push("/products");
+        router.push("/");
       } else {
         alert("Invalid credentials!");
       }

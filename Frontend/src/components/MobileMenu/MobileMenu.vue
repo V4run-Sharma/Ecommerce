@@ -1,5 +1,5 @@
 <template>
-  <div class="mobile-menu-wrapper">
+  <article class="mobile-menu-wrapper">
     <div class="logo-wrapper">
       <img src="@/assets/blibli.webp" alt="logo" />
     </div>
@@ -9,7 +9,7 @@
       <p class="view-order-history">Orders</p>
       <p class="logout">Logout</p>
     </div>
-  </div>
+  </article>
 </template>
 
 <script src="./mobile-menu.js"></script>

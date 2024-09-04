@@ -1,17 +1,17 @@
 <template>
   <div class="product-card">
-    <img class="product-image" :src="product.image" :alt="product.title" />
+    <img
+      class="product-image"
+      src="https://www.ddealz.in/cdn/shop/products/p1_1024x1024@2x.jpg?v=1626518069"
+      :alt="product.title"
+    />
     <div class="product-details">
       <h4 class="product-name">
-        {{
-          product.title.length > 20
-            ? product.title.slice(0, 13) + "..."
-            : product.title
-        }}
+        {{ product.pname }}
       </h4>
       <div class="product-price-action">
-        <p class="product-price">{{ product.price }}</p>
-        <button class="add-to-cart-btn" @click="addToCart(product)">
+        <p class="product-price">${{ product.minPrice }}</p>
+        <button class="add-to-cart-btn" @click="addToCart(product, `1`)">
           Add to Cart
         </button>
       </div>
@@ -27,7 +27,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 0.5rem;
+  gap: 1rem;
   border: 2px solid #ccc;
   padding: 1rem;
   border-radius: 0.5rem;
@@ -36,12 +36,10 @@
 
 .product-card:hover {
   border-color: #007bff;
-  box-shadow: 0 0 1rem 9px #007bff22;
 }
 
 .product-image {
   width: 100%;
-  height: 225px;
   object-fit: contain;
 }
 
@@ -54,6 +52,7 @@
 }
 
 .product-name {
+  font-weight: normal;
   line-break: anywhere;
 }
 
@@ -62,6 +61,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.product-price {
+  font-weight: bold;
 }
 
 .add-to-cart-btn {
@@ -75,6 +78,7 @@
 }
 
 .add-to-cart-btn:hover {
+  cursor: pointer;
   background-color: #0056b3;
 }
 

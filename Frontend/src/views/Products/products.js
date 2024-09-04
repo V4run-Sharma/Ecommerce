@@ -14,7 +14,6 @@ export default defineComponent({
     const fetchProducts = async () => {
       await productStore.getAllProducts();
       productsInStore.value = productStore.products;
-      console.log(productsInStore.value);
     };
     fetchProducts();
 

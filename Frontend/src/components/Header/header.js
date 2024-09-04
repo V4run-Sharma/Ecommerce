@@ -1,18 +1,22 @@
 import { computed, defineComponent, ref } from "vue";
 
+import CartMenu from "../CartMenu/CartMenu.vue";
 import MobileMenu from "../MobileMenu/MobileMenu.vue";
 import ProfileMenu from "../ProfileMenu/ProfileMenu.vue";
+import useCartStore from "@/stores/cart";
 
 export default defineComponent({
   name: "Header",
   components: {
     MobileMenu,
     ProfileMenu,
+    CartMenu,
   },
   setup() {
     const isMobile = computed(() => window.innerWidth < 768);
     const isMobileMenuOpen = ref(false);
     const isProfileMenuOpen = ref(false);
+    const isCartMenuOpen = ref(false);
 
     const toggleMobileMenu = computed(() => {
       isMobileMenuOpen.value = !isMobileMenuOpen.value;
@@ -20,37 +24,30 @@ export default defineComponent({
 
     const toggleProfileMenu = computed(() => {
       isProfileMenuOpen.value = !isProfileMenuOpen.value;
+      isCartMenuOpen.value = false;
     });
 
-    const closeMenus = computed(() => {
-      isMobileMenuOpen.value = false;
+    const toggleCartMenu = computed(() => {
+      isCartMenuOpen.value = !isCartMenuOpen.value;
       isProfileMenuOpen.value = false;
     });
 
-    const handleClickOutside = (event) => {
-      const mobileMenu = document.getElementById("mobile-menu-wrapper");
-      const profileMenu = document.getElementById("profile-menu-wrapper");
-
-      if (
-        mobileMenu &&
-        !mobileMenu.contains(event.target) &&
-        profileMenu &&
-        !profileMenu.contains(event.target)
-      ) {
-        closeMenus();
-      }
-    };
-
-    window.addEventListener("click", handleClickOutside);
+    const cartStore = useCartStore();
+    const cartCount = computed(() => cartStore.count);
 
     return {
       userName: "Varun",
-      cartCount: 0,
+      cartCount,
+
       isMobile,
-      isProfileMenuOpen,
-      toggleProfileMenu,
       isMobileMenuOpen,
       toggleMobileMenu,
+
+      isProfileMenuOpen,
+      toggleProfileMenu,
+
+      isCartMenuOpen,
+      toggleCartMenu,
     };
   },
 });
