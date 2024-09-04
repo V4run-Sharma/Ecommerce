@@ -18,7 +18,6 @@ const useProductStore = defineStore("products", () => {
     let data = await response.json();
     products.value = data.data;
     document.cookie;
-    console.log(response.headers);
   };
 
   return {

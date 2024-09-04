@@ -1,43 +1,52 @@
 <template>
-    <div class="signup-page">
-      <img src="../assets/logo.png" class="logo">
-        <div class="container">
+  <div class="signup-page">
+    <img src="../assets/blibli.webp" class="logo" />
+    <div class="container">
       <h2>Signup</h2>
       <form @submit.prevent="handleSignup">
         <input v-model="username" type="text" placeholder="Username" required />
         <input v-model="email" type="email" placeholder="Email" required />
-        <input v-model="password" type="password" placeholder="Password" required />
+        <input
+          v-model="password"
+          type="password"
+          placeholder="Password"
+          required
+        />
         <button type="submit">Signup</button>
       </form>
       <p class="login-option">
-        Already have an account? <b><router-link to="/login"> Login</router-link></b>
+        Already have an account?
+        <b><router-link to="/login"> Login</router-link></b>
       </p>
     </div>
-</div>
-  </template>
-  
-  <script setup>
-  import { ref } from 'vue';
-  import { useAuthStore } from '@/stores/authStore';
-  import { useRouter } from 'vue-router';
-  
-  const email = ref('');
-  const password = ref('');
-  const username = ref('');
-  const authStore = useAuthStore();
-  const router = useRouter();
-  
-  async function handleSignup() {
-    const success = await authStore.signup(username.value,email.value, password.value);
-    console.log(username)
-    if (success) {
-      router.push('/login');
-    }
+  </div>
+</template>
+
+<script setup>
+import { ref } from "vue";
+import { useAuthStore } from "@/stores/authStore";
+import { useRouter } from "vue-router";
+
+const email = ref("");
+const password = ref("");
+const username = ref("");
+const authStore = useAuthStore();
+const router = useRouter();
+
+async function handleSignup() {
+  const success = await authStore.signup(
+    username.value,
+    email.value,
+    password.value
+  );
+  if (success) {
+    router.push("/login");
   }
-  </script>
-  
-  <style scoped>
-  .logo {
+}
+</script>
+
+<style scoped>
+.logo {
   position: absolute;
   width: 150px;
   height: 80px;
@@ -64,7 +73,7 @@
   flex-direction: column;
   gap: 25px;
   padding: 40px;
-  height: 500px; 
+  height: 500px;
   width: 40%;
   max-width: 450px;
   background-color: rgba(255, 255, 255, 0.85);
@@ -78,19 +87,19 @@
 form {
   display: flex;
   flex-direction: column;
-  gap: 25px; 
-  flex-grow: 1; 
-  justify-content: center; 
+  gap: 25px;
+  flex-grow: 1;
+  justify-content: center;
 }
 
-h2{
+h2 {
   align-self: center;
   font-size: 38px;
   margin-top: 10px;
 }
 input,
 button {
-  padding: 15px; 
+  padding: 15px;
   border: 1px solid #030303;
   border-radius: 8px;
   font-size: 20px;
@@ -128,4 +137,3 @@ button:hover {
   color: #004494;
 }
 </style>
-  

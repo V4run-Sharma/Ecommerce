@@ -146,7 +146,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: white;
+  gap: 0.5rem;
   border-radius: 0.5rem;
 }
 
@@ -169,18 +169,18 @@
 }
 
 .cart-wrapper {
+  background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
   transition: all 0.3s;
-  border-top-left-radius: 0.5rem;
-  border-bottom-left-radius: 0.5rem;
+  border-radius: 0.5rem;
 }
 
 .cart-wrapper:hover {
   cursor: pointer;
-  background-color: #0072ff22;
+  background-color: #cfe0ff;
 }
 
 .cart-icon {
@@ -201,16 +201,15 @@
 
 .profile-name {
   padding: calc(0.5rem + 2px);
-  /* font-size: ; */
+  background-color: white;
   font-weight: bold;
-  border-top-right-radius: 0.5rem;
-  border-bottom-right-radius: 0.5rem;
+  border-radius: 0.5rem;
   transition: all 0.3s;
 }
 
 .profile-name:hover {
   cursor: pointer;
-  background-color: #0072ff22;
+  background-color: #cfe0ff;
 }
 
 .cart-menu-wrapper {

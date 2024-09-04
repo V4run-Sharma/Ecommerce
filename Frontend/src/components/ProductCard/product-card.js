@@ -23,7 +23,6 @@ export default defineComponent({
         body: JSON.stringify({ product, cartId }),
       });
       const data = await res.json();
-      console.log(product);
     };
 
     return {

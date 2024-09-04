@@ -18,7 +18,6 @@ const useCartStore = defineStore("cart", () => {
     });
     let data = await response.json();
     cart.value = data.data;
-    console.log(authToken);
   };
   getAllCartItems();
 
@@ -42,7 +41,6 @@ const useCartStore = defineStore("cart", () => {
     });
 
     let data = await response.json();
-    console.log(data);
   };
 
   const deleteItem = async (pId, sId) => {
@@ -62,7 +60,6 @@ const useCartStore = defineStore("cart", () => {
     });
 
     let data = await response.json();
-    console.log(data);
   };
 
   return {
