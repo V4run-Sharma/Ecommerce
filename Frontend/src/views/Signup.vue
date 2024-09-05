@@ -13,10 +13,11 @@
           required
         />
         <button type="submit">Signup</button>
+        <p v-if="message" :class="messageClass">{{ message }}</p>
       </form>
       <p class="login-option">
         Already have an account?
-        <b><router-link to="/login"> Login</router-link></b>
+        <b><router-link to="/login">Login</router-link></b>
       </p>
     </div>
   </div>
@@ -27,19 +28,24 @@ import { ref } from "vue";
 import { useAuthStore } from "@/stores/authStore";
 import { useRouter } from "vue-router";
 
+const username = ref("");
 const email = ref("");
 const password = ref("");
-const username = ref("");
+const message = ref("");
+const messageClass = ref("");
 const authStore = useAuthStore();
 const router = useRouter();
 
 async function handleSignup() {
-  const success = await authStore.signup(
+  const response = await authStore.signup(
     username.value,
     email.value,
     password.value
   );
-  if (success) {
+  message.value = response.message;
+  messageClass.value = response.success ? "success" : "error";
+
+  if (response.success) {
     router.push("/login");
   }
 }
@@ -53,7 +59,6 @@ async function handleSignup() {
   object-fit: contain;
   margin-left: 40px;
 }
-
 .signup-page {
   display: flex;
   align-items: flex-start;
@@ -67,7 +72,6 @@ async function handleSignup() {
   background-repeat: no-repeat;
   gap: 20px;
 }
-
 .container {
   display: flex;
   flex-direction: column;
@@ -83,7 +87,6 @@ async function handleSignup() {
   margin-top: 100px;
   margin-left: 40px;
 }
-
 form {
   display: flex;
   flex-direction: column;
@@ -91,7 +94,6 @@ form {
   flex-grow: 1;
   justify-content: center;
 }
-
 h2 {
   align-self: center;
   font-size: 38px;
@@ -104,36 +106,40 @@ button {
   border-radius: 8px;
   font-size: 20px;
 }
-
 button {
   background-color: #0056b3;
   color: white;
   cursor: pointer;
   transition: background-color 0.3s;
 }
-
 button:hover {
   background-color: #004494;
 }
-
 .login-option {
   margin-top: 20px;
   text-align: center;
   font-size: 15px;
 }
-
 .login-option b {
   font-size: 21px;
   margin-left: 5px;
 }
-
 .login-option a {
   color: #0056b3;
   text-decoration: none;
   font-weight: bold;
 }
-
 .login-option a:hover {
   color: #004494;
+}
+p.error {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}
+p.success {
+  color: green;
+  font-size: 14px;
+  margin-top: 10px;
 }
 </style>

@@ -3,26 +3,25 @@
     <div
       class="cart-item"
       v-for="cartItem in cartItemsInStore"
-      :key="cartItem.cId"
+      :key="cartItem.cartId"
     >
       <img :src="cartItem.image" alt="cart item" />
       <div class="cart-item-details">
         <div class="item-detials">
           <p class="cart-item-name">
-            {{ cartItem.name }}
+            {{ cartItem.pname }}
           </p>
           <p class="cart-item-price">{{ cartItem.price }}</p>
         </div>
         <div class="item-amount">
           <div class="change-amount">
             <button
-              disabled="cartItem.quantity === 1"
               @click="
                 updateQuantity(
-                  cartItem.cId,
-                  cartItem.pId,
-                  cartItem.quantity,
-                  cartItem.sId
+                  cartItem.cartId,
+                  cartItem.pid,
+                  cartItem.quantity - 1,
+                  cartItem.sid
                 )
               "
             >
@@ -30,13 +29,12 @@
             </button>
             <p>{{ cartItem.quantity }}</p>
             <button
-              disabled="cartItem.quantity === cartItem.stock"
               @click="
                 updateQuantity(
-                  cartItem.cId,
-                  cartItem.pId,
-                  cartItem.quantity,
-                  cartItem.sId
+                  cartItem.cartId,
+                  cartItem.pid,
+                  cartItem.quantity + 1,
+                  cartItem.sid
                 )
               "
             >
@@ -44,12 +42,16 @@
             </button>
           </div>
           <div class="delete-item">
-            <button @click="deleteItem(cartItem.pId, cartItem.sId)">
+            <button @click="deleteItem(cartItem.pid, cartItem.sid)">
               Delete
             </button>
           </div>
         </div>
       </div>
+    </div>
+    <hr />
+    <div class="checkout-wrapper">
+      <button class="checkout-btn" @click="toCheckOut">Checkout</button>
     </div>
   </article>
 </template>
@@ -144,5 +146,28 @@
 .delete-item button:hover {
   cursor: pointer;
   background-color: rgb(204, 0, 0);
+}
+
+hr {
+  width: 100%;
+  border: 1px solid lightgrey;
+}
+
+.checkout-wrapper {
+  display: flex;
+}
+
+.checkout-btn {
+  background-color: #0072ff;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s;
+}
+
+.checkout-btn:hover {
+  cursor: pointer;
+  background-color: #0056b3;
 }
 </style>

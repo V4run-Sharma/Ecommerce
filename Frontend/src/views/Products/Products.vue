@@ -2,15 +2,29 @@
   <section class="products-wrapper">
     <div class="banner-carousel">
       <img
-        class="banner-image"
+        class="ps5 banner"
         src="https://fundamental.in/wp-content/uploads/2021/03/ps5-banner-1024x375.png"
         alt="Banner"
+      />
+      <img
+        class="ps5 banner"
+        src="https://fundamental.in/wp-content/uploads/2021/03/ps5-banner-1024x375.png"
+        alt="Banner"
+      />
+
+      <img
+        src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/f3832e180145769.6505ae76214ca.jpg"
+        alt="iphone banner"
+      />
+      <img
+        src="https://dlcdnimgs.asus.com/websites/global/productcustomizedTab/1460/images/banner-00.jpg"
+        alt=""
       />
     </div>
     <div class="products">
       <ProductCard
         v-for="product in productsInStore"
-        :key="product.pId"
+        :key="product.pid"
         :product="product"
         class="product-card"
       />
@@ -31,14 +45,18 @@
 
 .banner-carousel {
   width: 100%;
+  height: 20rem;
   display: flex;
   justify-content: center;
+  overflow-x: scroll;
+  scrollbar-width: none;
+  gap: 1rem;
   box-shadow: 0 0.25rem 1rem 9px #00000033;
   border-radius: 1rem;
 }
 
 .banner-image {
-  width: 100%;
+  object-fit: contain;
   border-radius: 1rem;
 }
 

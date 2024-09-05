@@ -1,11 +1,12 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 const useCartStore = defineStore("cart", () => {
   const cart = ref([]);
 
-  const getAllCartItems = async (cId) => {
-    const url = `http://10.20.3.79:8092/cart/getItems?cId=${cId}`;
+  const getAllCartItems = async () => {
+    const url = `http://10.20.3.79:8092/cart/getItems?cartId=112`;
     const response = await fetch(url, {
       method: "GET",
       headers: {
@@ -16,57 +17,58 @@ const useCartStore = defineStore("cart", () => {
       },
     });
     let data = await response.json();
+    console.log(data);
     cart.value = data.data;
   };
-  getAllCartItems(111);
+  getAllCartItems();
 
   // const count = computed(() => cart.value.length);
 
-  const updateQuantity = async (cId, pId, quantity, sId) => {
-    const url = `http://10.20.3.79:8092/cart/updateQuantity?cId=${cId}&newQuantity=${quantity}&pId=${pId}&sId=${sId}`;
+  const updateQuantity = async (cartId, pid, quantity, sid) => {
+    const url = `http://10.20.3.79:8092/cart/updateQuantity?cartId=112&newQuantity=${quantity}&pId=${pid}&sId=${sid}`;
     const response = await fetch(url, {
-      method: "POST",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
 
         // cross-origin
         "Access-Control-Allow-Origin": "*",
       },
-      body: JSON.stringify({
-        cId,
-        pId,
-        quantity,
-        sId,
-      }),
     });
-
+    console.log(cartId, pid, quantity, sid);
     let data = await response.json();
+    console.log(data);
+    getAllCartItems();
   };
 
-  const deleteItem = async (pId, sId) => {
-    const url = "";
+  const deleteItem = async (pid, sid) => {
+    console.log(pid, sid);
+    const url = `http://10.20.3.79:8092/cart/deleteItem?cartId=112&pId=${pid}&sId=${sid}`;
     const response = await fetch(url, {
-      method: "POST",
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json",
 
         // cross-origin
         "Access-Control-Allow-Origin": "*",
       },
-      body: JSON.stringify({
-        pId,
-        sId,
-      }),
     });
-
     let data = await response.json();
+    console.log(data);
+    getAllCartItems();
   };
 
+  const toCheckOut = async () => {
+    const router = useRouter();
+
+    router.push("/payment");
+  };
   return {
     cart,
-    // count,
+    getAllCartItems,
     updateQuantity,
     deleteItem,
+    toCheckOut,
   };
 });
 

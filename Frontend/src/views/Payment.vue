@@ -1,259 +1,279 @@
 <template>
-  <div class="main-container">
-    <div class="payment-page">
-      <h1>PAYMENT</h1>
+  <img
+    src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Logo-blibli-blue.svg/1200px-Logo-blibli-blue.svg.png"
+    alt="Blibli logo"
+  />
 
-      <div class="products-list">
-        <div class="product" v-for="(product, index) in products" :key="index">
-          <img :src="product.image" alt="product image" class="product-image" />
-          <div class="product-details">
-            <div class="product-info">
-              <h3>{{ product.name }}</h3>
-              <p>Price: ₹{{ product.price.toFixed(2) }}</p>
-            </div>
-            <div class="product-info2">
-              <p>Quantity: {{ product.quantity }}</p>
-              <p>Total: ₹{{ (product.price * product.quantity).toFixed(2) }}</p>
-            </div>
-          </div>
+  <div class="checkout-container">
+    <aside class="order-summary">
+      <h2>ORDER SUMMARY</h2>
+      <div class="summary-item" v-for="item in cartItems" :key="item.pId">
+        <img
+          :src="getImageUrl(item.image)"
+          alt="Product Image"
+          class="product-image"
+        />
+        <div class="product-details">
+          <p class="product-name">{{ item.pName }}</p>
+          <p>Price: Rs {{ item.price }}</p>
+          <p>Quantity: {{ item.quantity }}</p>
         </div>
       </div>
-
-      <div class="total">
-        <h2>Total Amount: ₹{{ totalPrice.toFixed(2) }}</h2>
+      <div class="summary-total">
+        <p class="total-price">Total Amount: Rs {{ total }}</p>
       </div>
+    </aside>
 
-      <div class="payment-method">
-        <label>
-          <input type="radio" v-model="paymentMethod" value="card" />
-          Pay by Card
-        </label>
-        <label>
-          <input type="radio" v-model="paymentMethod" value="cod" />
-          Cash on Delivery
-        </label>
-      </div>
+    <section class="payment-details">
+      <h2>SHIPPING DETAILS</h2>
+      <form @submit.prevent="handleProceed">
+        <div class="shipping-details">
+          <label for="firstName">First Name*</label>
+          <input type="text" id="firstName" />
 
-      <div class="payment-details" v-if="paymentMethod === 'card'">
-        <h2>Enter Payment Details</h2>
-        <form @submit.prevent="processPayment">
-          <label for="cardholder-name">Cardholder Name:</label>
+          <label for="lastName">Last Name*</label>
+          <input type="text" id="lastName" />
+
+          <label for="address">Address Line 1*</label>
+          <input type="text" id="address" />
+
+          <label for="city">City*</label>
+          <input type="text" id="city" />
+
+          <label for="postalCode">Postal Code*</label>
+          <input type="text" id="postalCode" />
+
+          <label for="country">Country/Region</label>
+          <input type="text" id="country" value="India" />
+        </div>
+
+        <h2>PAYMENT METHODS</h2>
+        <div class="payment-methods">
+          <label for="payment"> Credit/Debit Card </label>
           <input
-            v-model="paymentDetails.cardholderName"
-            type="text"
-            id="cardholder-name"
-            required/>
+            type="radio"
+            name="payment"
+            value="card"
+            v-model="selectedPaymentMethod"
+          />
+          <label>
+            UPI
+            <input
+              type="radio"
+              name="payment"
+              value="upi"
+              v-model="selectedPaymentMethod"
+            />
+          </label>
+          <label>
+            Cash on Delivery (COD)
+            <input
+              type="radio"
+              name="payment"
+              value="cod"
+              v-model="selectedPaymentMethod"
+            />
+          </label>
+        </div>
 
-          <label for="card-number">Card Number:</label>
+        <div v-if="selectedPaymentMethod === 'card'" class="card-details">
+          <label for="cardNumber">Card Number*</label>
           <input
-            v-model="paymentDetails.cardNumber"
             type="text"
-            id="card-number"
-            required
-            maxlength="16"
-            placeholder="1234 5678 9012 3456"/>
+            id="cardNumber"
+            placeholder="1234 5678 9012 3456"
+          />
 
-          <label for="expiry-date">Expiry Date:</label>
-          <input
-            v-model="paymentDetails.expiryDate"
-            type="text"
-            id="expiry-date"
-            required
-            maxlength="5"
-            placeholder="MM/YY"/>
+          <label for="expiryDate">Expiry Date*</label>
+          <input type="text" id="expiryDate" placeholder="MM/YY" />
 
-          <label for="cvv">CVV:</label>
-          <input
-            v-model="paymentDetails.cvv"
-            type="text"
-            id="cvv"
-            required
-            maxlength="3"
-            placeholder="123"/>
+          <label for="cvv">CVV*</label>
+          <input type="text" id="cvv" placeholder="123" />
+        </div>
 
-          <button type="submit" class="payment-button">
-            Pay ₹{{ totalPrice.toFixed(2) }}
-          </button>
-        </form>
-      </div>
-
-      <div v-if="paymentMethod === 'cod'">
-        <h2>Cash on Delivery Selected</h2>
-        <button @click="confirmCOD" class="payment-button">
-          Confirm COD
+        <div v-if="selectedPaymentMethod === 'upi'" class="upi-details">
+          <label for="upiId">UPI ID*</label>
+          <input type="text" id="upiId" placeholder="example@upi" />
+        </div>
+        <button type="submit" class="proceed-button" @click="checkOut">
+          CONTINUE TO BILLING
         </button>
-      </div>
-    </div>
+      </form>
+    </section>
   </div>
 </template>
 
-<script setup>
-import { ref } from "vue";
-import { useAuthStore } from '@/stores/authStore';
-import { useRouter } from 'vue-router';
-const router = useRouter();
-
-const products = ref([
-  {
-    name: "Product 1",
-    price: 2999,
-    quantity: 1,
-    image: "https://via.placeholder.com/150",
+<script>
+export default {
+  data() {
+    return {
+      cartItems: [],
+      total: 0,
+      selectedPaymentMethod: "",
+    };
   },
-  {
-    name: "Product 2",
-    price: 1999,
-    quantity: 2,
-    image: "https://via.placeholder.com/150",
+  mounted() {
+    this.fetchCartData();
   },
-  {
-    name: "Product 3",
-    price: 4999,
-    quantity: 1,
-    image: "https://via.placeholder.com/150",
+
+  methods: {
+    async fetchCartData() {
+      try {
+        const response = await fetch(
+          "http://10.20.3.79:8092/cart/getItems?cartId=112"
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const result = await response.json();
+        console.log("Fetched Data:", result);
+
+        if (result.success && Array.isArray(result.data)) {
+          this.cartItems = result.data.map((item) => ({
+            pId: item.pId,
+            pName: item.pName,
+            image: item.image,
+            price: item.price,
+            quantity: item.quantity,
+          }));
+        } else {
+          console.error("Unexpected data format:", result);
+        }
+
+        this.calculateTotal();
+      } catch (error) {
+        console.error("Error fetching cart data:", error);
+      }
+    },
+    calculateTotal() {
+      this.total = this.cartItems.reduce(
+        (acc, item) => acc + item.price * item.quantity,
+        0
+      );
+    },
+    handleProceed() {
+      this.$router.push("/thank");
+    },
+    getImageUrl(image) {
+      const match = image.match();
+      return match
+        ? `https://drive.google.com/uc?export=view&id=${match[0]}`
+        : image;
+    },
+    async checkOut() {
+      const url = `http://10.20.3.79:8092/cart/checkout?cartId=112`;
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+
+      let data = await response.json();
+      console.log(data);
+    },
   },
-]);
-
-const totalPrice = ref(
-  products.value.reduce((sum, product) => sum + product.price * product.quantity, 0)
-);
-
-const paymentDetails = ref({
-  cardholderName: "",
-  cardNumber: "",
-  expiryDate: "",
-  cvv: "",
-});
-
-const paymentMethod = ref("card");
-
-function processPayment() {
-  if (
-    paymentDetails.value.cardholderName &&
-    paymentDetails.value.cardNumber &&
-    paymentDetails.value.expiryDate &&
-    paymentDetails.value.cvv
-  ) {
-    alert(`Payment of ₹${totalPrice.value.toFixed(2)} processed successfully!`);
-    router.push('/thank');
-  } else {
-    alert("Please fill in all payment details.");
-  }
-}
-
-function confirmCOD() {
-  alert("Cash on Delivery selected. Order will be paid at delivery.");
-  router.push('/thank');
-}
+};
 </script>
 
 <style scoped>
-h1 {
-  margin: 10px;
-  font-size: 35px;
+img {
+  max-width: 150px;
+  height: auto;
+  margin-bottom: 2px;
+  margin-top: 5px;
+  margin-left: 20px;
 }
-
-.main-container {
-  background-image: url("https://t3.ftcdn.net/jpg/09/17/90/72/360_F_917907209_a0QdDLtQhOGD5PF4IbiEM8xvNWOLYGBg.jpg");
-  background-repeat: repeat;
+h2 {
+  margin-bottom: 12px;
+  margin-top: 4px;
 }
-
-.payment-page {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  text-align: center;
-}
-
-.products-list {
-  margin: 10px;
-}
-
-.product {
+.checkout-container {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
+}
+
+.order-summary {
+  width: 35%;
+  border: 1px solid #ccc;
   padding: 15px;
-  background-color: #d9edff;
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 8px;
+  overflow-y: auto;
+  max-height: 600px;
+}
+
+.summary-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
 }
 
 .product-image {
   width: 100px;
   height: 100px;
   object-fit: cover;
-  border-radius: 4px;
-}
-
-.product-details {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.product-info {
-  text-align: left;
-  font-size: 18px;
-  margin: 10px;
-}
-
-.product-info2 {
-  text-align: right;
-  font-size: 18px;
-  margin: 10px;
-}
-
-.total {
-  font-size: 1.4em;
-  margin-bottom: 20px;
-}
-
-.payment-method {
-  margin-bottom: 20px;
-}
-
-.payment-method label {
+  border: 1px solid #ddd;
+  border-radius: 8px;
   margin-right: 15px;
 }
 
-.payment-details form {
+.product-details {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  background-color: #d9edff;
+  gap: 5px;
+}
+
+.product-name {
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.summary-total {
+  margin-top: 20px;
+  font-weight: bold;
+  color: #003366;
+}
+
+.total-price {
+  color: red;
+}
+
+.payment-details {
+  width: 60%;
+  border: 1px solid #ccc;
   padding: 20px;
   border-radius: 8px;
+}
+
+.shipping-details label,
+.payment-methods label {
+  display: block;
+  margin: 10px 0 5px;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
   border: 1px solid #ddd;
+  border-radius: 7px;
 }
 
-.payment-details label {
-  font-size: 1em;
-  text-align: left;
-}
-
-.payment-details input {
+.proceed-button {
+  width: 100%;
   padding: 10px;
-  font-size: 1em;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.payment-button {
-  padding: 10px 20px;
-  background-color: #bdb6eb;
-  color: rgb(0, 0, 0);
+  background-color: #003366;
+  color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 1.2em;
-}
-
-.payment-button:hover {
-  background-color: #FFD981;
+  font-size: 16px;
 }
 </style>

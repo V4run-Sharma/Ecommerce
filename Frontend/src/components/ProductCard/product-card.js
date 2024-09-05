@@ -1,4 +1,5 @@
 import { defineComponent } from "vue";
+import useCartStore from "@/stores/cart";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
@@ -11,27 +12,30 @@ export default defineComponent({
   },
   setup(props) {
     const router = useRouter();
-    const url = "http://10.20.3.79:8092/cart/addItem";
 
-    const addToCart = async (product, cartId) => {
-      // const authToken = checkUser();
+    const addToCart = async (pid, minSId, quantity) => {
+      const url = `http://10.20.3.79:8092/cart/addItem?cartId=112`;
+      const product = {
+        pId: pid,
+        sId: minSId,
+        quantity: 1,
+      };
       const res = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           // authToken: "hello",
         },
-        body: JSON.stringify({
-          pId: "f6daf1e4-3d74-47b2-a6e4-f63553bf5502",
-          quantity: 3,
-          sId: "SELLER008",
-        }),
+        body: JSON.stringify(product),
       });
+      const cartStore = useCartStore();
+      cartStore.getAllCartItems();
       const data = await res.json();
+      console.log(product, data);
     };
 
-    const goToDetails = (pId) => {
-      router.push(`/product/${pId}`);
+    const goToDetails = (pid) => {
+      router.push(`/product/${pid}`);
     };
 
     return {

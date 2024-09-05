@@ -12,6 +12,7 @@
           required
         />
         <button type="submit">Login</button>
+        <p v-if="message" :class="messageClass">{{ message }}</p>
       </form>
       <p class="signup-option">
         No account? <b><router-link to="/signup">Signup</router-link></b>
@@ -27,13 +28,18 @@ import { useRouter } from "vue-router";
 
 const email = ref("");
 const password = ref("");
+const message = ref("");
+const messageClass = ref("");
 const authStore = useAuthStore();
 const router = useRouter();
 
 async function handleLogin() {
-  const success = await authStore.login(email.value, password.value);
-  if (success) {
-    router.push("/");
+  const response = await authStore.login(email.value, password.value);
+  message.value = response.message;
+  messageClass.value = response.success ? "success" : "error";
+
+  if (response.success) {
+    router.push("/products");
   }
 }
 </script>
@@ -128,5 +134,16 @@ button:hover {
 
 .signup-option a:hover {
   color: #004494;
+}
+p.error {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+p.success {
+  color: green;
+  font-size: 14px;
+  margin-top: 10px;
 }
 </style>
