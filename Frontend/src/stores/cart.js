@@ -4,8 +4,8 @@ import { ref } from "vue";
 const useCartStore = defineStore("cart", () => {
   const cart = ref([]);
 
-  const getAllCartItems = async (cid) => {
-    const url = `http://10.20.3.79:8092/cart/getItems?cId=${cid}`;
+  const getAllCartItems = async (cId) => {
+    const url = `http://10.20.3.79:8092/cart/getItems?cId=${cId}`;
     const response = await fetch(url, {
       method: "GET",
       headers: {
@@ -22,8 +22,8 @@ const useCartStore = defineStore("cart", () => {
 
   // const count = computed(() => cart.value.length);
 
-  const updateQuantity = async (cid, pid, quantity, sid) => {
-    const url = `http://10.20.3.79:8092/cart/updateQuantity?cId=${cid}&newQuantity=${quantity}&pId=${pid}&sId=${sid}`;
+  const updateQuantity = async (cId, pId, quantity, sId) => {
+    const url = `http://10.20.3.79:8092/cart/updateQuantity?cId=${cId}&newQuantity=${quantity}&pId=${pId}&sId=${sId}`;
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -33,10 +33,10 @@ const useCartStore = defineStore("cart", () => {
         "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({
-        cid,
-        pid,
+        cId,
+        pId,
         quantity,
-        sid,
+        sId,
       }),
     });
 

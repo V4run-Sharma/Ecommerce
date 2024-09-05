@@ -22,16 +22,16 @@ export default defineComponent({
           // authToken: "hello",
         },
         body: JSON.stringify({
-          pid: "f6daf1e4-3d74-47b2-a6e4-f63553bf5502",
+          pId: "f6daf1e4-3d74-47b2-a6e4-f63553bf5502",
           quantity: 3,
-          sid: "SELLER008",
+          sId: "SELLER008",
         }),
       });
       const data = await res.json();
     };
 
-    const goToDetails = (pid) => {
-      router.push(`/product/${pid}`);
+    const goToDetails = (pId) => {
+      router.push(`/product/${pId}`);
     };
 
     return {

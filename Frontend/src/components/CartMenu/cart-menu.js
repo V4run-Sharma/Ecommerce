@@ -13,18 +13,17 @@ export default defineComponent({
     };
     fetchCartItems();
 
-    const updateQuantity = (cId, pid, quantity, sid) => {
-      console.log(cId, pid, quantity, sid);
-      cartStore.updateQuantity(cId, pid, quantity, sid);
+    const updateQuantity = (cId, pId, quantity, sId) => {
+      console.log(cId, pId, quantity, sId);
+      cartStore.updateQuantity(cId, pId, quantity, sId);
     };
 
-    const deleteItem = (pid, sid) => {
-      cartStore.deleteItem(pid, sid);
+    const deleteItem = (pId, sId) => {
+      cartStore.deleteItem(pId, sId);
     };
 
     return {
       cartItemsInStore,
-      cartCount: cartItemsInStore.value.length,
       updateQuantity,
       deleteItem,
     };

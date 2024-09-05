@@ -16,6 +16,7 @@
         <div class="item-amount">
           <div class="change-amount">
             <button
+              disabled="cartItem.quantity === 1"
               @click="
                 updateQuantity(
                   cartItem.cId,
@@ -29,12 +30,13 @@
             </button>
             <p>{{ cartItem.quantity }}</p>
             <button
+              disabled="cartItem.quantity === cartItem.stock"
               @click="
                 updateQuantity(
-                  cartItem.cid,
-                  cartItem.pid,
+                  cartItem.cId,
+                  cartItem.pId,
                   cartItem.quantity,
-                  cartItem.sid
+                  cartItem.sId
                 )
               "
             >
@@ -42,7 +44,7 @@
             </button>
           </div>
           <div class="delete-item">
-            <button @click="deleteItem(cartItem.pid, cartItem.sid)">
+            <button @click="deleteItem(cartItem.pId, cartItem.sId)">
               Delete
             </button>
           </div>

@@ -10,7 +10,7 @@
     <div class="products">
       <ProductCard
         v-for="product in productsInStore"
-        :key="product.pid"
+        :key="product.pId"
         :product="product"
         class="product-card"
       />
