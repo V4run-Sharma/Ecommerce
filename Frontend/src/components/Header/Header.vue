@@ -26,13 +26,15 @@
     </div>
 
     <div class="search-wrapper">
-      <input type="text" placeholder="Search" />
-      <button class="search-btn">
-        <img src="@/assets/search.svg" class="search-icon" alt="Search Icon" />
-      </button>
+      <input
+        type="text"
+        placeholder="Search"
+        v-model="keyword"
+        @input="search(keyword)"
+      />
     </div>
 
-    <div class="profile-wrapper">
+    <div v-if="isLoggedIn" class="profile-wrapper">
       <div @click="toggleCartMenu" class="cart-wrapper">
         <img src="@/assets/cart.svg" alt="Cart" class="cart-icon" />
         <div class="cart-count">{{ cartCount }}</div>
@@ -48,6 +50,10 @@
       <div class="profile-menu-wrapper">
         <ProfileMenu v-if="isProfileMenuOpen" />
       </div>
+    </div>
+
+    <div v-else class="login-wrapper">
+      <router-link to="/login">Login</router-link>
     </div>
   </section>
 </template>
@@ -110,36 +116,13 @@
   width: clamp(10rem, 25vw, 20rem);
   padding: 0.75rem;
   border: none;
-  border-top-left-radius: 0.5rem;
-  border-bottom-left-radius: 0.5rem;
+  border-radius: 0.5rem;
   transition: all 0.3s;
 }
 
 .search-wrapper input:focus {
   outline: none;
   background: #cfe0ff;
-}
-
-.search-btn {
-  width: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #fff;
-  border: none;
-  border-top-right-radius: 0.5rem;
-  border-bottom-right-radius: 0.5rem;
-  padding: 0.75rem;
-  transition: all 0.3s;
-}
-
-.search-btn:hover {
-  cursor: pointer;
-  background-color: #cfe0ff;
-}
-
-.search-icon {
-  width: calc(1rem - 0.5px);
 }
 
 .profile-wrapper {
@@ -228,5 +211,24 @@
   z-index: 1;
   width: fit-content;
   border-radius: 0.5rem;
+}
+
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.login-wrapper a {
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  background-color: white;
+  color: black;
+  font-weight: 700;
+  border: 2px solid #0072ff;
+  border-radius: 0.5rem;
+  transition: all 0.3s;
 }
 </style>

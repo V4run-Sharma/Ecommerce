@@ -3,25 +3,26 @@
     <div
       class="cart-item"
       v-for="cartItem in cartItemsInStore"
-      :key="cartItem.cartId"
+      :key="cartItem._id"
     >
       <img :src="cartItem.image" alt="cart item" />
       <div class="cart-item-details">
         <div class="item-detials">
           <p class="cart-item-name">
-            {{ cartItem.pname }}
+            {{ cartItem.pName }}
           </p>
-          <p class="cart-item-price">{{ cartItem.price }}</p>
+          <p class="cart-item-price">${{ cartItem.price }}</p>
         </div>
         <div class="item-amount">
           <div class="change-amount">
             <button
+              :disabled="cartItem.quantity === 1"
               @click="
                 updateQuantity(
-                  cartItem.cartId,
-                  cartItem.pid,
+                  // cartItem.cartId,
+                  cartItem._id,
                   cartItem.quantity - 1,
-                  cartItem.sid
+                  cartItem.sId
                 )
               "
             >
@@ -29,12 +30,13 @@
             </button>
             <p>{{ cartItem.quantity }}</p>
             <button
+              :disabled="cartItem.quantity === cartItem.stock"
               @click="
                 updateQuantity(
-                  cartItem.cartId,
-                  cartItem.pid,
+                  // cartItem.cartId,
+                  cartItem._id,
                   cartItem.quantity + 1,
-                  cartItem.sid
+                  cartItem.sId
                 )
               "
             >
@@ -51,7 +53,9 @@
     </div>
     <hr />
     <div class="checkout-wrapper">
-      <button class="checkout-btn" @click="toCheckOut">Checkout</button>
+      <button class="checkout-btn" @click="toPayment">
+        Proceed to Payment
+      </button>
     </div>
   </article>
 </template>
@@ -62,7 +66,7 @@
 .cart-menu-wrapper {
   background-color: white;
   display: flex;
-  width: fit-content;
+  max-width: 50rem;
   flex-direction: column;
   align-items: start;
   justify-content: start;
@@ -95,6 +99,7 @@
 .item-detials {
   display: flex;
   justify-content: space-between;
+  gap: 2rem;
   width: 100%;
 }
 
@@ -127,6 +132,10 @@
   border-radius: 0.5rem;
   padding: 0.25rem 0.5rem;
   transition: all 0.3s;
+}
+
+.change-amount button:disabled {
+  opacity: 0.7;
 }
 
 .change-amount button:hover {

@@ -1,17 +1,16 @@
 <template>
   <div class="product-card" @click.stop="goToDetails(product.pid)">
-    <img class="product-image" :src="product.image" :alt="product.title" />
+    <div class="image-wrapper">
+      <img class="product-image" :src="product.image" :alt="product.pname" />
+    </div>
     <div class="product-details">
       <h4 class="product-name">
         {{ product.pname }}
       </h4>
       <div class="product-price-action">
         <p class="product-price">${{ product.minPrice }}</p>
-        <button
-          class="add-to-cart-btn"
-          @click.stop="addToCart(product.pid, product.minSId, product.quantity)"
-        >
-          Add to Cart
+        <button class="add-to-cart-btn" @click.stop="addToCart(product)">
+          Add
         </button>
       </div>
     </div>
@@ -35,6 +34,14 @@
 
 .product-card:hover {
   border-color: #007bff;
+}
+
+.image-wrapper {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .product-image {

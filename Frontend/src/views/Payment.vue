@@ -8,11 +8,7 @@
     <aside class="order-summary">
       <h2>ORDER SUMMARY</h2>
       <div class="summary-item" v-for="item in cartItems" :key="item.pId">
-        <img
-          :src="getImageUrl(item.image)"
-          alt="Product Image"
-          class="product-image"
-        />
+        <img :src="item.image" alt="Product Image" class="product-image" />
         <div class="product-details">
           <p class="product-name">{{ item.pName }}</p>
           <p>Price: Rs {{ item.price }}</p>
@@ -96,7 +92,7 @@
           <input type="text" id="upiId" placeholder="example@upi" />
         </div>
         <button type="submit" class="proceed-button" @click="checkOut">
-          CONTINUE TO BILLING
+          CHECKOUT
         </button>
       </form>
     </section>
@@ -154,12 +150,7 @@ export default {
     handleProceed() {
       this.$router.push("/thank");
     },
-    getImageUrl(image) {
-      const match = image.match();
-      return match
-        ? `https://drive.google.com/uc?export=view&id=${match[0]}`
-        : image;
-    },
+
     async checkOut() {
       const url = `http://10.20.3.79:8092/cart/checkout?cartId=112`;
       const response = await fetch(url, {

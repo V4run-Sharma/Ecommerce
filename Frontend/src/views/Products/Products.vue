@@ -6,11 +6,6 @@
         src="https://fundamental.in/wp-content/uploads/2021/03/ps5-banner-1024x375.png"
         alt="Banner"
       />
-      <img
-        class="ps5 banner"
-        src="https://fundamental.in/wp-content/uploads/2021/03/ps5-banner-1024x375.png"
-        alt="Banner"
-      />
 
       <img
         src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/f3832e180145769.6505ae76214ca.jpg"
@@ -23,11 +18,13 @@
     </div>
     <div class="products">
       <ProductCard
-        v-for="product in productsInStore"
-        :key="product.pid"
+        v-if="!noProductsFound"
+        v-for="product in searchProductsInStore"
+        :key="product._id"
         :product="product"
         class="product-card"
       />
+      <h2 v-else>No Products Found</h2>
     </div>
   </section>
 </template>

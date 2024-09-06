@@ -1,11 +1,11 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { useRouter } from "vue-router";
 
 const useCartStore = defineStore("cart", () => {
   const cart = ref([]);
 
   const getAllCartItems = async () => {
+    console.log(cart.value);
     const url = `http://10.20.3.79:8092/cart/getItems?cartId=112`;
     const response = await fetch(url, {
       method: "GET",
@@ -20,9 +20,7 @@ const useCartStore = defineStore("cart", () => {
     console.log(data);
     cart.value = data.data;
   };
-  getAllCartItems();
-
-  // const count = computed(() => cart.value.length);
+  // getAllCartItems();
 
   const updateQuantity = async (cartId, pid, quantity, sid) => {
     const url = `http://10.20.3.79:8092/cart/updateQuantity?cartId=112&newQuantity=${quantity}&pId=${pid}&sId=${sid}`;
@@ -37,8 +35,7 @@ const useCartStore = defineStore("cart", () => {
     });
     console.log(cartId, pid, quantity, sid);
     let data = await response.json();
-    console.log(data);
-    getAllCartItems();
+    return data;
   };
 
   const deleteItem = async (pid, sid) => {
@@ -54,21 +51,14 @@ const useCartStore = defineStore("cart", () => {
       },
     });
     let data = await response.json();
-    console.log(data);
-    getAllCartItems();
+    return data;
   };
 
-  const toCheckOut = async () => {
-    const router = useRouter();
-
-    router.push("/payment");
-  };
   return {
     cart,
     getAllCartItems,
     updateQuantity,
     deleteItem,
-    toCheckOut,
   };
 });
 

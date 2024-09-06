@@ -34,12 +34,25 @@ const authStore = useAuthStore();
 const router = useRouter();
 
 async function handleLogin() {
+  if (email.value.split("@")[1].includes(".") === false) {
+    message.value = "Invalid email address";
+    messageClass.value = "error";
+    return;
+  }
+  if (password.value.length < 8) {
+    message.value = "Password must be at least 8 characters";
+    messageClass.value = "error";
+    return;
+  }
   const response = await authStore.login(email.value, password.value);
-  message.value = response.message;
-  messageClass.value = response.success ? "success" : "error";
-
-  if (response.success) {
-    router.push("/products");
+  if (response.status) {
+    authStore.userName = response.data;
+    localStorage.setItem("auth", response.data);
+    router.push("/");
+  } else {
+    localStorage.removeItem("auth");
+    message.value = response.message;
+    messageClass.value = "error";
   }
 }
 </script>

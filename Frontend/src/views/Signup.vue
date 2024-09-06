@@ -37,16 +37,33 @@ const authStore = useAuthStore();
 const router = useRouter();
 
 async function handleSignup() {
+  if (!isNaN(parseInt(username.value[0]))) {
+    message.value = "Username must start with a letter";
+    messageClass.value = "error";
+    return;
+  }
+  if (email.value.split("@")[1].includes(".") === false) {
+    message.value = "Invalid email address";
+    messageClass.value = "error";
+    return;
+  }
+  if (password.value.length < 8) {
+    message.value = "Password must be at least 8 characters";
+    messageClass.value = "error";
+    return;
+  }
   const response = await authStore.signup(
     username.value,
     email.value,
     password.value
   );
-  message.value = response.message;
-  messageClass.value = response.success ? "success" : "error";
-
-  if (response.success) {
+  if (response.status) {
+    authStore.userName = response.data;
+    localStorage.setItem("username", response.data);
     router.push("/login");
+  } else {
+    message.value = response.message;
+    messageClass.value = "error";
   }
 }
 </script>

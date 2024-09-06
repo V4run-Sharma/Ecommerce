@@ -9,14 +9,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "jsonwebtoken": "^9.0.2",
     "pinia": "^2.1.7",
-    "vue": "^3.4.29",
+    "vue": "^3.5.3",
     "vue-router": "^4.3.3",
     "vue3-carousel": "^0.3.3"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@vitejs/plugin-vue": "^5.0.5",
-    "vite": "^5.3.1"
+    "vite": "^5.4.3"
   }
 }

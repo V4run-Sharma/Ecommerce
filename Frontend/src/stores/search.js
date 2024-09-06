@@ -5,8 +5,8 @@ const useSearchProductStore = defineStore("searchProducts", () => {
   const searchProducts = ref([]);
   const searchToken = ref("");
 
-  const getAllSearchProducts = async (searchToken) => {
-    const url = "http://10.20.3.216:8090/search/";
+  const getAllSearchProducts = async (keyword = "") => {
+    const url = `http://10.20.3.216:8091/search?keyword=${keyword}`;
     const response = await fetch(url, {
       method: "GET",
       headers: {
@@ -17,8 +17,9 @@ const useSearchProductStore = defineStore("searchProducts", () => {
     });
     let data = await response.json();
     searchProducts.value = data.data;
-    document.cookie;
+    console.log(searchProducts.value);
   };
+  getAllSearchProducts();
 
   return {
     getAllSearchProducts,

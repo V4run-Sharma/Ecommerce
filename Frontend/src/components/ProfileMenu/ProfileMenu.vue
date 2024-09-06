@@ -1,7 +1,7 @@
 <template>
   <div class="profile-menu-wrapper">
-    <p class="profile-menu-item">Orders</p>
-    <p class="profile-menu-item">Logout</p>
+    <p class="profile-menu-item" @click="orderhistory">Orders</p>
+    <p class="profile-menu-item" @click="logout">Logout</p>
   </div>
 </template>
 

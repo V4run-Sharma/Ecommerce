@@ -1,45 +1,72 @@
-import { defineComponent, ref } from "vue";
+import { computed, defineComponent, ref } from "vue";
 
 import useCartStore from "@/stores/cart";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   setup() {
-    const cartItemsInStore = ref([]);
+    const router = useRouter();
+    const cartItemsInStore = computed(() => {
+      console.log(useCartStore().cart);
+      return useCartStore().cart;
+    });
+
     const quantities = ref([
       {
-        pId: "",
+        _id: "",
         quantity: 0,
       },
     ]);
     const cartStore = useCartStore();
 
-    const fetchCartItems = () => {
-      cartItemsInStore.value = cartStore.cart;
-      console.log(cartItemsInStore.value);
-    };
-    fetchCartItems();
+    // const fetchCartItems = () => {
+    //   cartStore.getAllCartItems();
+    //   cartItemsInStore.value = cartStore.cart;
+    //   console.log(cartItemsInStore.value);
+    // };
+    // fetchCartItems();
 
     const fetchQuantities = () => {
       for (let i = 0; i < cartItemsInStore.value.length; i++) {
-        quantities.value[cartItemsInStore.value[i].pId] =
-          cartItemsInStore.value[i].quantity;
+        quantities.value.push({
+          _id: cartItemsInStore.value[i]._id,
+          quantity: cartItemsInStore.value[i].quantity,
+        });
       }
-      console.log(quantities.value);
     };
     fetchQuantities();
 
-    const updateQuantity = (cartId, pId, quantity, sId) => {
-      console.log(cartId, pId, quantity, sId);
-      quantities.value[pId] = quantity;
-      cartStore.updateQuantity(cartId, pId, quantity, sId);
+    const updateQuantity = async (_id, quantity, sId) => {
+      console.log(_id, quantity, sId);
+      cartItemsInStore.value = cartItemsInStore.value.find(
+        (item) => item._id === _id
+      ).quantity = quantity;
+      quantities.value = quantities.value.find(
+        (item) => item._id === _id
+      ).quantity = quantity;
+      // quantities.value[_id] = quantity;
+      // const response = await cartStore.updateQuantity(
+      //   cartId,
+      //   pId,
+      //   quantity,
+      //   sId
+      // );
+      // if (response.success) {
+      //   fetchCartItems();
+      //   fetchQuantities();
+      // }
     };
 
-    const deleteItem = (pId, sId) => {
-      cartStore.deleteItem(pId, sId);
+    const deleteItem = async (pId, sId) => {
+      const response = await cartStore.deleteItem(pId, sId);
+      if (response.success) {
+        fetchCartItems();
+        fetchQuantities();
+      }
     };
 
-    const toCheckOut = () => {
-      cartStore.toCheckOut();
+    const toPayment = () => {
+      router.push("/payment");
     };
 
     const orderHistory = (uId) => {
@@ -50,7 +77,7 @@ export default defineComponent({
       cartItemsInStore,
       updateQuantity,
       deleteItem,
-      toCheckOut,
+      toPayment,
       orderHistory,
       quantities,
     };
