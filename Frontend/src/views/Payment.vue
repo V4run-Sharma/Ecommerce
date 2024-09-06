@@ -100,6 +100,8 @@
 </template>
 
 <script>
+import { useRouter } from "vue-router";
+
 export default {
   data() {
     return {
@@ -115,9 +117,14 @@ export default {
   methods: {
     async fetchCartData() {
       try {
-        const response = await fetch(
-          "http://10.20.3.79:8092/cart/getItems?cartId=112"
-        );
+        const response = await fetch("http://10.20.2.234:8090/cart/getItems", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("auth")}`,
+            "Access-Control-Allow-Origin": "*",
+          },
+        });
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -152,11 +159,12 @@ export default {
     },
 
     async checkOut() {
-      const url = `http://10.20.3.79:8092/cart/checkout?cartId=112`;
+      const url = `http://10.20.2.234:8090/cart/checkout`;
       const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("auth")}`,
           "Access-Control-Allow-Origin": "*",
         },
       });
@@ -164,6 +172,15 @@ export default {
       let data = await response.json();
       console.log(data);
     },
+  },
+  setup() {
+    const router = useRouter();
+
+    const isLoggedIn = localStorage.getItem("auth");
+
+    if (!isLoggedIn) {
+      router.push("/");
+    }
   },
 };
 </script>

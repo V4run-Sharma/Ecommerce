@@ -19,12 +19,12 @@ export default defineComponent({
     ]);
     const cartStore = useCartStore();
 
-    // const fetchCartItems = () => {
-    //   cartStore.getAllCartItems();
-    //   cartItemsInStore.value = cartStore.cart;
-    //   console.log(cartItemsInStore.value);
-    // };
-    // fetchCartItems();
+    const fetchCartItems = () => {
+      cartStore.getAllCartItems();
+      cartItemsInStore.value = cartStore.cart;
+      console.log(cartItemsInStore.value);
+    };
+    fetchCartItems();
 
     const fetchQuantities = () => {
       for (let i = 0; i < cartItemsInStore.value.length; i++) {
@@ -36,25 +36,14 @@ export default defineComponent({
     };
     fetchQuantities();
 
-    const updateQuantity = async (_id, quantity, sId) => {
-      console.log(_id, quantity, sId);
-      cartItemsInStore.value = cartItemsInStore.value.find(
-        (item) => item._id === _id
-      ).quantity = quantity;
-      quantities.value = quantities.value.find(
-        (item) => item._id === _id
-      ).quantity = quantity;
-      // quantities.value[_id] = quantity;
-      // const response = await cartStore.updateQuantity(
-      //   cartId,
-      //   pId,
-      //   quantity,
-      //   sId
-      // );
-      // if (response.success) {
-      //   fetchCartItems();
-      //   fetchQuantities();
-      // }
+    const updateQuantity = async (pid, quantity, sId) => {
+      console.log(pid, quantity, sId);
+      quantities.value[pid] = quantity;
+      const response = await cartStore.updateQuantity(pid, quantity, sId);
+      if (response.success) {
+        fetchCartItems();
+        fetchQuantities();
+      }
     };
 
     const deleteItem = async (pId, sId) => {

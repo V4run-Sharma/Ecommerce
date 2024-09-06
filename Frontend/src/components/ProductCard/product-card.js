@@ -15,18 +15,18 @@ export default defineComponent({
     const cartStore = useCartStore();
 
     const addToCart = async (addedProduct) => {
-      const url = `http://10.20.2.234:8090/cart/addItem?cartId=112`;
+      const url = `http://10.20.2.234:8090/cart/addItem`;
       const product = {
-        _id: addedProduct._id,
-        sId: addedProduct.sId,
+        pId: addedProduct.pid,
+        sId: addedProduct.minSId,
         quantity: 1,
       };
-      const authToken = localStorage.getItem("auth");
+      console.log(product);
       const res = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          authToken: authToken,
+          Authorization: `Bearer ${localStorage.getItem("auth")}`,
         },
         body: JSON.stringify(product),
       });

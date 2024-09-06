@@ -1,26 +1,17 @@
 <template>
   <section class="products-wrapper">
     <div class="banner-carousel">
-      <img
-        class="ps5 banner"
-        src="https://fundamental.in/wp-content/uploads/2021/03/ps5-banner-1024x375.png"
-        alt="Banner"
-      />
-
-      <img
-        src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/f3832e180145769.6505ae76214ca.jpg"
-        alt="iphone banner"
-      />
-      <img
-        src="https://dlcdnimgs.asus.com/websites/global/productcustomizedTab/1460/images/banner-00.jpg"
-        alt=""
-      />
+      <Swiper :space-between="50" :slides-per-view="1" :loop="true">
+        <SwiperSlide v-for="(image, index) in images" :key="index">
+          <img :src="image.src" :alt="image.alt" class="carousel-image" />
+        </SwiperSlide>
+      </Swiper>
     </div>
     <div class="products">
       <ProductCard
         v-if="!noProductsFound"
         v-for="product in searchProductsInStore"
-        :key="product._id"
+        :key="product.pid"
         :product="product"
         class="product-card"
       />
@@ -41,21 +32,37 @@
 }
 
 .banner-carousel {
+  z-index: 0;
+  /* display: flex;
+  justify-content: center;
+  align-items: start; */
   width: 100%;
   height: 20rem;
+  margin: 0 auto;
+  box-shadow: 0 0.25rem 1rem 9px #00000033;
+  border-radius: 1rem;
+}
+
+.carousel-image {
+  z-index: 0;
+  width: 100%;
+  max-height: 20rem;
+  display: block;
+  object-fit: cover;
+  border-radius: 1rem;
+}
+
+/* .banner-carousel {
+  width: 100%;
   display: flex;
   justify-content: center;
   overflow-x: scroll;
   scrollbar-width: none;
   gap: 1rem;
-  box-shadow: 0 0.25rem 1rem 9px #00000033;
-  border-radius: 1rem;
 }
 
 .banner-image {
-  object-fit: contain;
-  border-radius: 1rem;
-}
+} */
 
 .products {
   width: 100%;

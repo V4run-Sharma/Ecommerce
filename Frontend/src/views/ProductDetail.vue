@@ -29,7 +29,7 @@
               :key="seller.sid"
               :value="seller"
             >
-              {{ seller.sName }} - ${{ seller.price }}
+              {{ seller.sname }} - ${{ seller.price }}
               {{ seller.stock < 1 ? " - Out of Stock" : "" }}
               {{
                 seller.stock < 5 && seller.stock > 0
@@ -83,16 +83,17 @@ export default defineComponent({
     };
 
     const addToCart = async () => {
-      const url = `http://10.20.3.79:8092/cart/addItem?cartId=112`;
+      const url = `http://10.20.2.234:8090/cart/addItem`;
       try {
         const res = await fetch(url, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("auth")}`,
           },
           body: JSON.stringify({
             pId: product.value.pid,
-            sId: selectedSeller.value.sid,
+            sId: selectedSeller.value.sId,
             quantity: 1,
           }),
         });

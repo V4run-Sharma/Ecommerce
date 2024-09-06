@@ -22,16 +22,33 @@
 
 <script>
 import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 
 export default {
   name: "OrderHistory",
   setup() {
+    const router = useRouter();
+
+    const isLoggedIn = localStorage.getItem("auth");
+
+    if (!isLoggedIn) {
+      router.push("/");
+    }
+
     const orders = ref([]);
 
     const fetchOrders = async () => {
       try {
         const response = await fetch(
-          `http://10.20.3.79:8092/order/getAllOrders?userId=112`
+          `http://10.20.2.234:8090/order/getAllOrders`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("auth")}`,
+              "Access-Control-Allow-Origin": "*",
+            },
+          }
         );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

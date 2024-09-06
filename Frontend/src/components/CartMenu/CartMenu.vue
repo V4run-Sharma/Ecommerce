@@ -9,7 +9,7 @@
       <div class="cart-item-details">
         <div class="item-detials">
           <p class="cart-item-name">
-            {{ cartItem.pName }}
+            {{ cartItem.pname }}
           </p>
           <p class="cart-item-price">${{ cartItem.price }}</p>
         </div>
@@ -20,9 +20,9 @@
               @click="
                 updateQuantity(
                   // cartItem.cartId,
-                  cartItem._id,
+                  cartItem.pid,
                   cartItem.quantity - 1,
-                  cartItem.sId
+                  cartItem.sid
                 )
               "
             >
@@ -34,9 +34,9 @@
               @click="
                 updateQuantity(
                   // cartItem.cartId,
-                  cartItem._id,
+                  cartItem.pid,
                   cartItem.quantity + 1,
-                  cartItem.sId
+                  cartItem.sid
                 )
               "
             >
