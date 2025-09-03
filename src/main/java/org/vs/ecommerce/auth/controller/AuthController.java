@@ -6,9 +6,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.vs.ecommerce.auth.model.Test;
+import org.vs.ecommerce.auth.model.Users;
+import org.vs.ecommerce.common.constants.ErrorCodes;
+import org.vs.ecommerce.common.constants.ErrorMessages;
 import org.vs.ecommerce.common.response.ApiResponse;
 
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -16,14 +20,17 @@ import java.util.UUID;
 public class AuthController {
 
     @GetMapping(name = "Auth Test Success", path = "/testSuccess")
-    public ResponseEntity<ApiResponse<Test>> testSuccess(@RequestParam UUID requestId) {
+    public ResponseEntity<ApiResponse<Users>> testSuccess(@RequestParam UUID requestId) {
 
-        ApiResponse<Test> response = ApiResponse.success(requestId, new Test(
-                UUID.randomUUID(),
-                "John Doe",
-                "john.doe@email.com",
-                "password123"
-        ));
+        Users customer = new Users();
+        customer.setUserId(UUID.randomUUID());
+        customer.setUsername("testuser");
+        customer.setEmail("testuser@email.com");
+        customer.setPassword("testuser123");
+        customer.setRoles(List.of("ROLE_SELLER", "ROLE_USER"));
+        customer.setCreatedAt(new Date().toString());
+        customer.setUpdatedAt(new Date().toString());
+        ApiResponse<Users> response = ApiResponse.success(requestId, customer);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -31,9 +38,9 @@ public class AuthController {
     }
 
     @GetMapping(name = "Auth Test Failure", path = "/testFailure")
-    public ResponseEntity<ApiResponse<Test>> testFailure(@RequestParam UUID requestId) {
+    public ResponseEntity<ApiResponse<Users>> testFailure(@RequestParam UUID requestId) {
 
-        ApiResponse<Test> response = ApiResponse.failure(requestId, "AUTH-401", "Unauthorized access");
+        ApiResponse<Users> response = ApiResponse.failure(requestId, ErrorCodes.AUTH_401, ErrorMessages.UNAUTHORIZED);
         response.setRequestId(UUID.randomUUID());
 
         return ResponseEntity
