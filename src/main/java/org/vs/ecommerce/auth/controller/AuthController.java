@@ -6,6 +6,7 @@ import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -83,5 +84,28 @@ public class AuthController {
                     .body(ApiResponse.failure(requestId, ErrorCodes.GEN_500, ErrorMessages.SERVER_ERROR));
         }
     }
+
+    @DeleteMapping("/delete/{userId}")
+    public ResponseEntity<ApiResponse<String>> deleteUser(@PathVariable UUID userId,
+                                                            @RequestParam UUID requestId) {
+        try {
+            log.info("Delete user attempt for userId={}", userId);
+            authService.deleteUser(userId);
+            return ResponseEntity
+                    .ok(ApiResponse.success(requestId, "User deleted successfully."));
+        } catch (IllegalArgumentException e) {
+            log.warn("Delete user failed: {}", e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(ApiResponse.failure(requestId, ErrorCodes.AUTH_400, e.getMessage()));
+        } catch (Exception e) {
+            log.error("Delete user failed for userId={} error={}", userId, e.getMessage(), e);
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.failure(requestId, ErrorCodes.GEN_500, ErrorMessages.SERVER_ERROR));
+        }
+    }
+
+
 
 }

@@ -81,5 +81,13 @@ public class AuthService {
 
         return Pair.of(userId, token);
     }
+
+    public void deleteUser(UUID userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new IllegalArgumentException("User not found.");
+        }
+        userRepository.deleteById(userId);
+        log.info("User deleted successfully userId={}", userId);
+    }
 }
 
