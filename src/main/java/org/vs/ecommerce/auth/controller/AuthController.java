@@ -2,6 +2,7 @@ package org.vs.ecommerce.auth.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -62,9 +63,9 @@ public class AuthController {
                                                           @RequestBody LoginRequestDto loginRequest) {
         try {
             log.info("Login attempt for email={}", loginRequest.getEmail());
-            String token = authService.login(loginRequest);
+            Pair<UUID, String> idToken= authService.login(loginRequest);
 
-            return ResponseEntity.ok(ApiResponse.success(requestId, new JwtResponse(token)));
+            return ResponseEntity.ok(ApiResponse.success(requestId, new JwtResponse(idToken.getFirst(), idToken.getSecond())));
         } catch (BadCredentialsException e) {
             log.warn("Login failed (bad credentials) email={}", loginRequest.getEmail());
             return ResponseEntity

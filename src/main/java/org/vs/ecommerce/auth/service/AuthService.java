@@ -2,6 +2,7 @@ package org.vs.ecommerce.auth.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.util.Pair;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,6 +18,7 @@ import org.vs.ecommerce.common.constants.ErrorMessages;
 import org.vs.ecommerce.common.utils.JwtUtil;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AuthService {
@@ -56,10 +58,11 @@ public class AuthService {
 
         Users savedUser = userRepository.save(newUser);
         log.info("User registered successfully userId={}", savedUser.getUserId());
+
         return savedUser;
     }
 
-    public String login(LoginRequestDto loginRequest) {
+    public Pair<UUID, String> login(LoginRequestDto loginRequest) {
         Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
         );
@@ -72,9 +75,11 @@ public class AuthService {
             throw new SecurityException(ErrorMessages.UNAUTHORIZED);
         }
 
+        UUID userId = userRepository.findByEmail(loginRequest.getEmail()).getUserId();
         String token = jwtUtil.generateTokenWithRole(principal, loginRequest.getRole());
         log.info("Login success for email={} as role={}", loginRequest.getEmail(), loginRequest.getRole());
-        return token;
+
+        return Pair.of(userId, token);
     }
 }
 
