@@ -1,5 +1,6 @@
 package org.vs.ecommerce.auth.service;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.util.Pair;
@@ -20,6 +21,7 @@ import org.vs.ecommerce.common.utils.JwtUtil;
 import java.util.List;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Service
 public class AuthService {
 
@@ -28,16 +30,6 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final Logger log = LoggerFactory.getLogger(AuthService.class);
-
-    public AuthService(UserRepository userRepository,
-                       PasswordEncoder passwordEncoder,
-                       AuthenticationManager authenticationManager,
-                       JwtUtil jwtUtil) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.authenticationManager = authenticationManager;
-        this.jwtUtil = jwtUtil;
-    }
 
     public Users signup(String role, SignupRequestDto signupRequest) {
         if (userRepository.findByEmail(signupRequest.getEmail()) != null) {

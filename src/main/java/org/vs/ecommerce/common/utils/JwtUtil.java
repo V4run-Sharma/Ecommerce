@@ -42,11 +42,14 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
+/*
+    Generic Token creator
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("roles", userDetails.getAuthorities());
         return createToken(claims, userDetails.getUsername());
     }
+*/
 
     public String generateTokenWithRole(UserDetails userDetails, String role) {
         Map<String, Object> claims = new HashMap<>();

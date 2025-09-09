@@ -1,5 +1,6 @@
 package org.vs.ecommerce.auth.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.util.Pair;
@@ -24,16 +25,13 @@ import org.vs.ecommerce.common.response.JwtResponse;
 
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
     private final AuthService authService;
     private final Logger log = LoggerFactory.getLogger(AuthController.class);
-
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
 
     @PostMapping("/{role}/signup")
     public ResponseEntity<ApiResponse<String>> signup(@PathVariable String role,
